@@ -1,0 +1,24 @@
+name: Download Android Build Tools 36.0.0
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Build Tools
+        run: |
+          set -e
+          URL="https://dl.google.com/android/repository/build-tools_r36_windows.zip"
+          wget -O build-tools_r36_windows.zip "$URL"
+          ls -lh build-tools_r36_windows.zip
+          file build-tools_r36_windows.zip
+
+      - name: Upload Build Tools
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-tools-36.0.0-windows
+          path: build-tools_r36_windows.zip
+          retention-days: 7

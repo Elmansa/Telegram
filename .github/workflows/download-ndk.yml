@@ -1,0 +1,29 @@
+name: Download Android NDK r27
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download NDK
+        run: |
+          wget -O android-ndk-r27-windows.zip \
+            https://dl.google.com/android/repository/android-ndk-r27-windows.zip
+
+      - name: Verify SHA1
+        run: |
+          echo "0ea2756e6815356831bda3af358cce4cdb6a981e  android-ndk-r27-windows.zip" | sha1sum -c -
+
+      - name: Split into parts
+        run: |
+          split -b 95M android-ndk-r27-windows.zip ndk.part.
+
+      - name: Upload parts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ndk-r27-parts
+          path: ndk.part.*
+          retention-days: 1

@@ -1,0 +1,29 @@
+name: Download AAPT2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download AAPT2 Windows
+        run: |
+          mkdir -p downloads
+
+          curl -L \
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/8.10.1-12782657/aapt2-8.10.1-12782657-windows.jar" \
+            -o "downloads/aapt2-8.10.1-12782657-windows.jar"
+
+      - name: Verify file
+        run: |
+          ls -lh downloads/
+          file downloads/aapt2-8.10.1-12782657-windows.jar
+
+      - name: Upload AAPT2
+        uses: actions/upload-artifact@v4
+        with:
+          name: aapt2-8.10.1-12782657-windows
+          path: downloads/aapt2-8.10.1-12782657-windows.jar
+          retention-days: 7
